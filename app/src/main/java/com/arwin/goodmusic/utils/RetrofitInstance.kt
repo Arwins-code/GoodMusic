@@ -7,7 +7,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://theaudiodb.com/api/v1/json/1/"
+//    private const val BASE_URL = "https://theaudiodb.com/api/v1/json/2/"
+    private const val BASE_URL = "https://openwhyd.org/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
