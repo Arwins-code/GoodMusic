@@ -1,37 +1,40 @@
 package com.arwin.goodmusic.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.arwin.goodmusic.R
-import com.arwin.goodmusic.model.Album
+import com.arwin.goodmusic.databinding.ItemAlbumBinding
+import com.arwin.goodmusic.model.DataSong
 import com.bumptech.glide.Glide
 
-class AlbumAdapter(private val albumList: List<Album>) : RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
+class AlbumAdapter(
+    private var albumList: List<DataSong>,
+    private val onItemClick: (DataSong) -> Unit
+) : RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
 
-    class AlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val albumName: TextView = itemView.findViewById(R.id.albumName)
-        val albumYear: TextView = itemView.findViewById(R.id.albumYear)
-        val albumImage: ImageView = itemView.findViewById(R.id.albumImage)
-    }
+    class AlbumViewHolder(val binding: ItemAlbumBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_album, parent, false)
-        return AlbumViewHolder(view)
+        val binding = ItemAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return AlbumViewHolder(binding)
+    }
+
+    fun updateData(newList: List<DataSong>) {
+        albumList = newList
+        notifyDataSetChanged() // Notify the adapter to refresh the list
     }
 
     override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
         val album = albumList[position]
-        holder.albumName.text = album.strAlbum
-        holder.albumYear.text = album.intYearReleased
-        // Load image using Glide
+        holder.binding.albumName.text = album.src?.name ?: ""
+        holder.binding.albumYear.text = album.uNm
         Glide
             .with(holder.itemView.context)
-            .load(album.strAlbumThumb)
-            .into(holder.albumImage)
+            .load(album.img)
+            .into(holder.binding.albumImage)
+        holder.itemView.setOnClickListener {
+            onItemClick(album)
+        }
     }
 
     override fun getItemCount(): Int {
