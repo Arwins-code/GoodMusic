@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arwin.goodmusic.adapter.AlbumAdapter
@@ -75,9 +74,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString()
-                if (query.isNotEmpty()) {
-                    viewModel.filterAlbums(query)
-                } else {
+                if (query.isEmpty()) {
                     viewModel.restoreAllAlbums()
                 }
             }
